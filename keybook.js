@@ -22,19 +22,19 @@ var keybook = {
 
         switch(type) {
             case "string":
-                localStorage[name] = ["string", content];
+                localStorage[name] = JSON.stringify(["string", content]);
                 this.localDictionary.push(name);
                 break;
             case "boolean":
-                content ? localStorage[name] = ["boolean", 1] : localStorage[name] = ["boolean", 0];
+                content ? localStorage[name] = JSON.stringify(["boolean", 1]) : localStorage[name] = JSON.stringify(["boolean", 0]);
                 this.localDictionary.push(name);
                 break;
             case "number":
-                localStorage[name] = ["number", content.toString()];
+                localStorage[name] = JSON.stringify(["number", content.toString()]);
                 this.localDictionary.push(name);
                 break;
             case "object":
-                localStorage[name] = ["object", JSON.stringify(content)];
+                localStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
                 this.localDictionary.push(name);
         }
     },
@@ -47,25 +47,25 @@ var keybook = {
 
         switch(type) {
             case "string":
-                if (localStorage[name][0] == "string") {
-                    return localStorage[name][1];
+                if (JSON.parse(localStorage[name])[0] == "string") {
+                    return JSON.parse(localStorage[name])[1];
                 }
                 break;
             case "boolean":
-                if (localStorage[name][0] == "boolean") {
+                if (JSON.parse(localStorage[name])[0] == "boolean") {
                     var b = false;
-                    localStorage[name][1] == "1" ? b = true : b = false;
+                    JSON.parse(localStorage[name])[1] == "1" ? b = true : b = false;
                     return b;
                 }
                 break;
             case "number":
-                if (localStorage[name][0] == "number") {
-                    return Number(localStorage[name][1]);
+                if (JSON.parse(localStorage[name])[0] == "number") {
+                    return Number(JSON.parse(localStorage[name])[1]);
                 }
                 break;
             case "object":
-                if (localStorage[name][0] == "object") {
-                    return JSON.parse(localStorage[name][1]);
+                if (JSON.parse(localStorage[name])[0] == "object") {
+                    return JSON.parse(JSON.parse(localStorage[name])[1]);
                 }
                 break;
             default:
@@ -78,16 +78,16 @@ var keybook = {
     localEdit: (name, content, type) => {
         switch(type) {
             case "string":
-                localStorage[name] = ["string", content];
+                localStorage[name] = JSON.stringify(["string", content]);
                 break;
             case "boolean":
-                content ? localStorage[name] = ["boolean", 1] : localStorage[name] = ["boolean", 0];
+                content ? localStorage[name] = JSON.stringify(["boolean", 1]) : localStorage[name] = JSON.stringify(["boolean", 0]);
                 break;
             case "number":
-                localStorage[name] = ["number", content.toString()];
+                localStorage[name] = JSON.stringify(["number", content.toString()]);
                 break;
             case "object":
-                localStorage[name] = ["object", JSON.stringify(content)];
+                localStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
             default:
                 console.error("Error: Incorrect property."); 
         }
@@ -103,19 +103,19 @@ var keybook = {
 
         switch(type) {
             case "string":
-                sessionStorage[name] = ["string", content];
+                sessionStorage[name] = JSON.stringify(["string", content]);
                 this.sessionDictionary.push(name);
                 break;
             case "boolean":
-                content ? sessionStorage[name] = ["boolean", 1] : sessionStorage[name] = ["boolean", 0];
+                content ? sessionStorage[name] = JSON.stringify(["boolean", 1]) : sessionStorage[name] = JSON.stringify(["boolean", 0]);
                 this.sessionDictionary.push(name);
                 break;
             case "number":
-                sessionStorage[name] = ["number", content.toString()];
+                sessionStorage[name] = JSON.stringify(["number", content.toString()]);
                 this.sessionDictionary.push(name);
                 break;
             case "object":
-                sessionStorage[name] = ["object", JSON.stringify(content)];
+                sessionStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
                 this.sessionDictionary.push(name);
             default:
                 console.error("Error: Incorrect property."); 
@@ -130,25 +130,25 @@ var keybook = {
 
         switch(type) {
             case "string":
-                if (sessionStorage[name][0] == "string") {
-                    return sessionStorage[name][1];
+                if (JSON.parse(sessionStorage[name])[0] == "string") {
+                    return JSON.parse(sessionStorage[name])[1];
                 }
                 break;
             case "boolean":
-                if (sessionStorage[name][0] == "boolean") {
+                if (JSON.parse(sessionStorage[name])[0] == "boolean") {
                     var b = false;
-                    sessionStorage[name][1] == "1" ? b = true : b = false;
+                    JSON.parse(sessionStorage[name])[1] == "1" ? b = true : b = false;
                     return b;
                 }
                 break;
             case "number":
-                if (sessionStorage[name][0] == "number") {
-                    return Number(sessionStorage[name][1]);
+                if (JSON.parse(sessionStorage[name])[0] == "number") {
+                    return Number(JSON.parse(sessionStorage[name])[1]);
                 }
                 break;
             case "object":
-                if (sessionStorage[name][0] == "object") {
-                    return JSON.parse(sessionStorage[name][1]);
+                if (JSON.parse(sessionStorage[name])[0] == "object") {
+                    return JSON.parse(JSON.parse(sessionStorage[name])[1]);
                 }
                 break;
             default:
@@ -161,16 +161,16 @@ var keybook = {
     sessionEdit: (name, content, type) => {
         switch(type) {
             case "string":
-                sessionStorage[name] = ["string", content];
+                sessionStorage[name] = JSON.stringify(["string", content]);
                 break;
             case "boolean":
-                content ? sessionStorage[name] = ["boolean", 1] : sessionStorage[name] = ["boolean", 0];
+                content ? sessionStorage[name] = JSON.stringify(["boolean", 1]) : sessionStorage[name] = JSON.stringify(["boolean", 0]);
                 break;
             case "number":
-                sessionStorage[name] = ["number", content.toString()];
+                sessionStorage[name] = JSON.stringify(["number", content.toString()]);
                 break;
             case "object":
-                sessionStorage[name] = ["object", JSON.stringify(content)];
+                sessionStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
             default:
                 console.error("Error: Incorrect property."); 
         }
