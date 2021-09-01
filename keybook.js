@@ -4,12 +4,12 @@ var keybook = {
 
     localTimeout: async(name, time) => {
         await new Promise(resolve => setTimeout(resolve, time));
-        this.localDelete(name);
+        keybook.localDelete(name);
     },
 
     sessionTimeout: async(name, time) => {
         await new Promise(resolve => setTimeout(resolve, time));
-        this.sessionDelete(name);
+        keybook.sessionDelete(name);
     },
 
     localStore: (name, content, type, optionalTimeout) => {
@@ -18,24 +18,24 @@ var keybook = {
             return;
         }
 
-        if (optionalTimeout) this.localTimeout(name, optionalTimeout);
+        if (optionalTimeout) keybook.localTimeout(name, optionalTimeout);
 
         switch(type) {
             case "string":
                 localStorage[name] = JSON.stringify(["string", content]);
-                this.localDictionary.push(name);
+                keybook.localDictionary.push(name);
                 break;
             case "boolean":
                 content ? localStorage[name] = JSON.stringify(["boolean", 1]) : localStorage[name] = JSON.stringify(["boolean", 0]);
-                this.localDictionary.push(name);
+                keybook.localDictionary.push(name);
                 break;
             case "number":
                 localStorage[name] = JSON.stringify(["number", content.toString()]);
-                this.localDictionary.push(name);
+                keybook.localDictionary.push(name);
                 break;
             case "object":
                 localStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
-                this.localDictionary.push(name);
+                keybook.localDictionary.push(name);
         }
     },
 
@@ -99,24 +99,24 @@ var keybook = {
             return;
         }
 
-        if (optionalTimeout) this.sessionTimeout(name, optionalTimeout);
+        if (optionalTimeout) keybook.sessionTimeout(name, optionalTimeout);
 
         switch(type) {
             case "string":
                 sessionStorage[name] = JSON.stringify(["string", content]);
-                this.sessionDictionary.push(name);
+                keybook.sessionDictionary.push(name);
                 break;
             case "boolean":
                 content ? sessionStorage[name] = JSON.stringify(["boolean", 1]) : sessionStorage[name] = JSON.stringify(["boolean", 0]);
-                this.sessionDictionary.push(name);
+                keybook.sessionDictionary.push(name);
                 break;
             case "number":
                 sessionStorage[name] = JSON.stringify(["number", content.toString()]);
-                this.sessionDictionary.push(name);
+                keybook.sessionDictionary.push(name);
                 break;
             case "object":
                 sessionStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
-                this.sessionDictionary.push(name);
+                keybook.sessionDictionary.push(name);
             default:
                 console.error("Error: Incorrect property."); 
         }
@@ -178,25 +178,25 @@ var keybook = {
 
     localClear: () => {
         localDictionary.forEach((i) => {
-            this.localDelete(i);
+            keybook.localDelete(i);
         });
         localDictionary = [];
     },
 
     sessionClear: () => {
         sessionDictionary.forEach((i) => {
-            this.sessionDelete(i);
+            keybook.sessionDelete(i);
         });
         sessionDictionary = [];
     },
 
     localDelete: (name) => {
-        this.localStore(name, null, object);
-        delete this.localDictionary[this.localDictionary.indexOf(name)];
+        keybook.localStore(name, null, object);
+        delete keybook.localDictionary[keybook.localDictionary.indexOf(name)];
     },
 
     sessionDelete: (name) => {
-        this.sessionStore(name, null, object);
-        delete this.sessionDictionary[this.sessionDictionary.indexOf(name)];
+        keybook.sessionStore(name, null, object);
+        delete keybook.sessionDictionary[keybook.sessionDictionary.indexOf(name)];
     }
 }
