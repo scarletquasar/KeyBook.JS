@@ -1,6 +1,6 @@
 var keybook = {
-    localDictionary = [],
-    sessionDictionary = [],
+    localDictionary:[],
+    sessionDictionary: [],
 
     localTimeout: async(name, time) => {
         await new Promise(resolve => setTimeout(resolve, time));
