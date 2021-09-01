@@ -176,26 +176,26 @@ var keybook = {
         }
     },
 
-    localClear = () => {
+    localClear: () => {
         localDictionary.forEach((i) => {
             this.localDelete(i);
         });
         localDictionary = [];
     },
 
-    sessionClear = () => {
+    sessionClear: () => {
         sessionDictionary.forEach((i) => {
             this.sessionDelete(i);
         });
         sessionDictionary = [];
     },
 
-    localDelete = (name) => {
+    localDelete: (name) => {
         this.localStore(name, null, object);
         delete this.localDictionary[this.localDictionary.indexOf(name)];
     },
 
-    sessionDelete = (name) => {
+    sessionDelete: (name) => {
         this.sessionStore(name, null, object);
         delete this.sessionDictionary[this.sessionDictionary.indexOf(name)];
     }
