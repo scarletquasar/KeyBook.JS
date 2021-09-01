@@ -4,12 +4,12 @@ var keybook = {
 
     localTimeout: async(name, time) => {
         await new Promise(resolve => setTimeout(resolve, time));
-        this.localStore(name, null, object);
+        this.localDelete(name);
     },
 
     sessionTimeout: async(name, time) => {
         await new Promise(resolve => setTimeout(resolve, time));
-        this.sessionStore(name, null, object);
+        this.sessionDelete(name);
     },
 
     localStore: (name, content, type, optionalTimeout) => {
@@ -178,17 +178,25 @@ var keybook = {
 
     localClear = () => {
         localDictionary.forEach((i) => {
-            this.localStore(i, null, object);
+            this.localDelete(i);
         });
         localDictionary = [];
     },
 
     sessionClear = () => {
         sessionDictionary.forEach((i) => {
-            this.sessionStore(i, null, object);
+            this.sessionDelete(i);
         });
         sessionDictionary = [];
+    },
+
+    localDelete = (name) => {
+        this.localStore(name, null, object);
+        delete this.localDictionary[this.localDictionary.indexOf(name)];
+    },
+
+    sessionDelete = (name) => {
+        this.sessionStore(name, null, object);
+        delete this.sessionDictionary[this.sessionDictionary.indexOf(name)];
     }
-
-
 }
