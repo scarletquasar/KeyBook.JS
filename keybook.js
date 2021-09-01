@@ -13,7 +13,7 @@ var keybook = {
     },
 
     localStore: (name, content, type, optionalTimeout) => {
-        if(localStorage[name]) {
+        if(localStorage[name] != null) {
             console.error("Error: The item "+name+" already exists. Use 'localEdit' instead."); 
             return;
         }
@@ -40,7 +40,7 @@ var keybook = {
     },
 
     localGet: (name, type) => {
-        if(!localStorage[name]) {
+        if(!localStorage[name] || localStorage[name] == null) {
             console.error("Error: The item "+name+" is not defined."); 
             return;
         }
@@ -95,7 +95,7 @@ var keybook = {
     },
 
     sessionStore: (name, content, type, optionalTimeout) => {
-        if(sessionStorage[name]) {
+        if(sessionStorage[name] != null) {
             console.error("Error: The item "+name+" already exists. Use 'sessionEdit' instead."); 
             return;
         }
@@ -125,7 +125,7 @@ var keybook = {
     },
 
     sessionGet: (name, type) => {
-        if(!sessionStorage[name]) {
+        if(!sessionStorage[name] || sessionStorage[name] == null) {
             console.error("Error: The item "+name+" is not defined."); 
             return;
         }
@@ -194,10 +194,10 @@ var keybook = {
     },
 
     localDelete: (name) => {
-        keybook.localEdit(name, null, "object");
+        localStorage[name] = null;
     },
 
     sessionDelete: (name) => {
-        keybook.sessionEdit(name, null, "object");
+        sessionStorage[name] = null;
     }
 }
