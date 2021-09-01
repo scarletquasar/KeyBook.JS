@@ -1,15 +1,17 @@
 var keybook = {
+    localDictionary = [],
+    sessionDictionary = [],
+
     localTimeout: async(name, time) => {
         await new Promise(resolve => setTimeout(resolve, time));
-        this.localStore(name, null);
+        this.localStore(name, null, object);
     },
 
     sessionTimeout: async(name, time) => {
         await new Promise(resolve => setTimeout(resolve, time));
-        this.sessionStore(name, null);
+        this.sessionStore(name, null, object);
     },
 
-    /* storex.localStore("Test", "string"); */
     localStore: (name, content, type, optionalTimeout) => {
         if(!localStorage[name]) {
             console.error("Error: The item "+name+" already exists. Use 'localEdit' instead."); 
@@ -21,15 +23,19 @@ var keybook = {
         switch(type) {
             case "string":
                 localStorage[name] = ["string", content];
+                this.localDictionary.push(name);
                 break;
             case "boolean":
                 content ? localStorage[name] = ["boolean", 1] : localStorage[name] = ["boolean", 0];
+                this.localDictionary.push(name);
                 break;
             case "number":
                 localStorage[name] = ["number", content.toString()];
+                this.localDictionary.push(name);
                 break;
             case "object":
                 localStorage[name] = ["object", JSON.stringify(content)];
+                this.localDictionary.push(name);
         }
     },
 
@@ -69,7 +75,7 @@ var keybook = {
 
     localGetRaw: (name) => { return localStorage[name] },
 
-    localEdit: (name, content, type, optionalTimeout) => {
+    localEdit: (name, content, type) => {
         switch(type) {
             case "string":
                 localStorage[name] = ["string", content];
@@ -98,15 +104,19 @@ var keybook = {
         switch(type) {
             case "string":
                 sessionStorage[name] = ["string", content];
+                this.sessionDictionary.push(name);
                 break;
             case "boolean":
                 content ? sessionStorage[name] = ["boolean", 1] : sessionStorage[name] = ["boolean", 0];
+                this.sessionDictionary.push(name);
                 break;
             case "number":
                 sessionStorage[name] = ["number", content.toString()];
+                this.sessionDictionary.push(name);
                 break;
             case "object":
                 sessionStorage[name] = ["object", JSON.stringify(content)];
+                this.sessionDictionary.push(name);
             default:
                 console.error("Error: Incorrect property."); 
         }
@@ -148,7 +158,7 @@ var keybook = {
 
     sessionGetRaw: (name) => { return sessionStorage[name] },
 
-    sessionEdit: (name, content, type, optionalTimeout) => {
+    sessionEdit: (name, content, type) => {
         switch(type) {
             case "string":
                 sessionStorage[name] = ["string", content];
@@ -164,5 +174,21 @@ var keybook = {
             default:
                 console.error("Error: Incorrect property."); 
         }
+    },
+
+    localClear = () => {
+        localDictionary.forEach((i) => {
+            this.localStore(i, null, object);
+        });
+        localDictionary = [];
+    },
+
+    sessionClear = () => {
+        sessionDictionary.forEach((i) => {
+            this.sessionStore(i, null, object);
+        });
+        sessionDictionary = [];
     }
+
+
 }
