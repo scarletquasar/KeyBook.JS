@@ -13,7 +13,7 @@ var keybook = {
     },
 
     localStore: (name, content, type, optionalTimeout) => {
-        if(!localStorage[name]) {
+        if(localStorage[name]) {
             console.error("Error: The item "+name+" already exists. Use 'localEdit' instead."); 
             return;
         }
@@ -94,7 +94,7 @@ var keybook = {
     },
 
     sessionStore: (name, content, type, optionalTimeout) => {
-        if(!sessionStorage[name]) {
+        if(sessionStorage[name]) {
             console.error("Error: The item "+name+" already exists. Use 'sessionEdit' instead."); 
             return;
         }
