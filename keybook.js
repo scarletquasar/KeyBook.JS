@@ -88,6 +88,7 @@ var keybook = {
                 break;
             case "object":
                 localStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
+                break;
             default:
                 console.error("Error: Incorrect property."); 
         }
@@ -117,6 +118,7 @@ var keybook = {
             case "object":
                 sessionStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
                 keybook.sessionDictionary.push(name);
+                break;
             default:
                 console.error("Error: Incorrect property."); 
         }
@@ -171,6 +173,7 @@ var keybook = {
                 break;
             case "object":
                 sessionStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
+                break;
             default:
                 console.error("Error: Incorrect property."); 
         }
