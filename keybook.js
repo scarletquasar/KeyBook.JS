@@ -1,5 +1,5 @@
 var keybook = {
-    localDictionary:[],
+    localDictionary: [],
     sessionDictionary: [],
 
     localTimeout: async(name, time) => {
@@ -180,26 +180,24 @@ var keybook = {
     },
 
     localClear: () => {
-        localDictionary.forEach((i) => {
+        keybook.localDictionary.forEach((i) => {
             keybook.localDelete(i);
         });
-        localDictionary = [];
+        keybook.localDictionary = [];
     },
 
     sessionClear: () => {
-        sessionDictionary.forEach((i) => {
+        keybook.sessionDictionary.forEach((i) => {
             keybook.sessionDelete(i);
         });
-        sessionDictionary = [];
+        keybook.sessionDictionary = [];
     },
 
     localDelete: (name) => {
-        keybook.localStore(name, null, object);
-        delete keybook.localDictionary[keybook.localDictionary.indexOf(name)];
+        keybook.localEdit(name, null, "object");
     },
 
     sessionDelete: (name) => {
-        keybook.sessionStore(name, null, object);
-        delete keybook.sessionDictionary[keybook.sessionDictionary.indexOf(name)];
+        keybook.sessionEdit(name, null, "object");
     }
 }
