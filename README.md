@@ -17,7 +17,7 @@ Currently in **Development Stage**
 <br><br>
 `keybook.[local/session]Edit(name, content, type)`: Edit the content and type of an entry in [location/session]Storage.
 <br><br>
-`keybook.[local/session]Dele(name)`: Delete an entry in [location/session]Storage.
+`keybook.[local/session]Delete(name)`: Delete an entry in [location/session]Storage.
 <br><br>
 `keybook.[local/session]Clear(name)`: Delete all the entries in [location/session]Storage.
 ## Thanks
