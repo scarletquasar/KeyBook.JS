@@ -8,18 +8,14 @@ Currently in **Development Stage**
 ## Usage:
 ### All library features can be called up using `keybook.*` <br>
 ## Functions:
-`keybook.[local/session]Store(name, content, type, optionalTimeout)`: Stores a value in [local/session]Storage if the key does not exist. The "name", 
-"content" and "type" arguments are required. The "optionalTimeout" argument is optional and inserts an expiration time for the value.
+`keybook.[local/session]Store(name, content, type)`: Stores a value in [local/session]Storage if the key does not exist. The "name", 
+"content" and "type" arguments are required.
 <br><br>
 `keybook.[local/session]Get(name, type)`: Gets a value stored in [local/session]Storage in the same type in which it was entered.
-<br><br>
-`keybook.[local/session]GetRaw(name)`: Gets a value stored in [local/session]Storage in the raw string form.
 <br><br>
 `keybook.[local/session]Edit(name, content, type)`: Edit the content and type of an entry in [location/session]Storage.
 <br><br>
 `keybook.[local/session]Delete(name)`: Delete an entry in [location/session]Storage.
-<br><br>
-`keybook.[local/session]Clear(name)`: Delete all the entries in [location/session]Storage.
 ## Thanks
 Thank you for reading about the project. If possible, consider collaborating in some way with the project, sharing it, or leaving a star.
 
