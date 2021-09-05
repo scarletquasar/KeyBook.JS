@@ -1,203 +1,130 @@
-var keybook = {
-    localDictionary: [],
-    sessionDictionary: [],
+/* Core */
+class keybook {
+    static jstr = JSON.stringify;
+    static jprs = JSON.parse;
+    static error_alreadyExists = (name) => { return "Error: The item "+name+" already exists." };
+    static error_notFound = (name) => { return "Error: The item "+name+" do not exists." }
+    static error_notCorrectType = "The called item does not match its current type.";
+    static error_incorrectProperty = (type) => { return "Error: The property "+type+" is invalid."}
 
-    localTimeout: async(name, time) => {
-        await new Promise(resolve => setTimeout(resolve, time));
-        keybook.localDelete(name);
-    },
-
-    sessionTimeout: async(name, time) => {
-        await new Promise(resolve => setTimeout(resolve, time));
-        keybook.sessionDelete(name);
-    },
-
-    localStore: (name, content, type, optionalTimeout) => {
-        if(localStorage[name] != null) {
-            console.error("Error: The item "+name+" already exists. Use 'localEdit' instead."); 
-            return;
-        }
-
-        if (optionalTimeout) keybook.localTimeout(name, optionalTimeout);
-
+    /* SessionStorage Operations */
+    static sessionStore(name, content, type) {
+        sessionStorage[name] != null ? ()=>{console.error(error_alreadyExists(name)); type="cancel"} : ()=>{}
         switch(type) {
             case "string":
-                localStorage[name] = JSON.stringify(["string", content]);
-                keybook.localDictionary.push(name);
+                sessionStorage[name] = keybook.jstr(["string", content]);
                 break;
             case "boolean":
-                content ? localStorage[name] = JSON.stringify(["boolean", 1]) : localStorage[name] = JSON.stringify(["boolean", 0]);
-                keybook.localDictionary.push(name);
+                content ? sessionStorage[name] = keybook.jstr(["boolean", 1]) : sessionStorage[name] = keybook.jstr(["boolean", 0]);
                 break;
             case "number":
-                localStorage[name] = JSON.stringify(["number", content.toString()]);
-                keybook.localDictionary.push(name);
+                sessionStorage[name] = keybook.jstr(["number", content.toString()]);
                 break;
             case "object":
-                localStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
-                keybook.localDictionary.push(name);
-        }
-    },
-
-    localGet: (name, type) => {
-        if(!localStorage[name] || localStorage[name] == null) {
-            console.error("Error: The item "+name+" is not defined."); 
-            return;
-        }
-
-        switch(type) {
-            case "string":
-                if (JSON.parse(localStorage[name])[0] == "string") {
-                    return JSON.parse(localStorage[name])[1];
-                }
+                sessionStorage[name] = keybook.jstr(["object", content]);
                 break;
-            case "boolean":
-                if (JSON.parse(localStorage[name])[0] == "boolean") {
-                    var b = false;
-                    JSON.parse(localStorage[name])[1] == "1" ? b = true : b = false;
-                    return b;
-                }
-                break;
-            case "number":
-                if (JSON.parse(localStorage[name])[0] == "number") {
-                    return Number(JSON.parse(localStorage[name])[1]);
-                }
-                break;
-            case "object":
-                if (JSON.parse(localStorage[name])[0] == "object") {
-                    return JSON.parse(JSON.parse(localStorage[name])[1]);
-                }
-                break;
+            case "cancel":
+                return;
             default:
-                console.error("Error: Incorrect property. Use 'localGetRaw' instead."); 
+                console.error(error_incorrectProperty(type)); 
         }
-    },
+    }
 
-    localGetRaw: (name) => { return localStorage[name] },
-
-    localEdit: (name, content, type) => {
+    static sessionGet(name, type) {
+        sessionStorage[name] != null ? ()=>{console.error(error_notFound(name)); type="cancel"} : ()=>{}
+        let parsed = keybook.jprs(sessionStorage[name]);
         switch(type) {
             case "string":
-                localStorage[name] = JSON.stringify(["string", content]);
+                if(parsed[0] == "string") return parsed[1];
+                else console.error(error_notCorrectType);
                 break;
             case "boolean":
-                content ? localStorage[name] = JSON.stringify(["boolean", 1]) : localStorage[name] = JSON.stringify(["boolean", 0]);
-                break;
+                var b;
+                if(parsed[0] == "boolean") parsed[1] == "1" ? b = true : b = false;
+                else { console.error(error_notCorrectType); break; }
+                return b;
             case "number":
-                localStorage[name] = JSON.stringify(["number", content.toString()]);
+                if(parsed[0] == "number") return Number(parsed[1]);
+                else console.error(error_notCorrectType);
                 break;
             case "object":
-                localStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
+                if(parsed[0] == "object") return keybook.jprs(parsed[1]);
+                else console.error(error_notCorrectType);
                 break;
+            case "cancel":
+                return;
             default:
-                console.error("Error: Incorrect property."); 
+                console.error(error_incorrectProperty(type));
         }
-    },
+    }
 
-    sessionStore: (name, content, type, optionalTimeout) => {
-        if(sessionStorage[name] != null) {
-            console.error("Error: The item "+name+" already exists. Use 'sessionEdit' instead."); 
-            return;
-        }
+    static sessionDelete(name) {
+        sessionStorage[name] = undefined;
+    }
 
-        if (optionalTimeout) keybook.sessionTimeout(name, optionalTimeout);
+    static sessionEdit(name, content, type) {
+        this.sessionDelete(name);
+        this.sessionStore(name, content, type);
+    }
 
+    /* LocalStorage Operations */
+
+    static localStore(name, content, type) {
+        localStorage[name] != null ? ()=>{console.error(error_alreadyExists(name)); type="cancel"} : ()=>{}
         switch(type) {
             case "string":
-                sessionStorage[name] = JSON.stringify(["string", content]);
-                keybook.sessionDictionary.push(name);
+                localStorage[name] = keybook.jstr(["string", content]);
                 break;
             case "boolean":
-                content ? sessionStorage[name] = JSON.stringify(["boolean", 1]) : sessionStorage[name] = JSON.stringify(["boolean", 0]);
-                keybook.sessionDictionary.push(name);
+                content ? localStorage[name] = keybook.jstr(["boolean", 1]) : localStorage[name] = keybook.jstr(["boolean", 0]);
                 break;
             case "number":
-                sessionStorage[name] = JSON.stringify(["number", content.toString()]);
-                keybook.sessionDictionary.push(name);
+                localStorage[name] = keybook.jstr(["number", content.toString()]);
                 break;
             case "object":
-                sessionStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
-                keybook.sessionDictionary.push(name);
+                localStorage[name] = keybook.jstr(["object", content]);
                 break;
+            case "cancel":
+                return;
             default:
-                console.error("Error: Incorrect property."); 
+                console.error(error_incorrectProperty(type)); 
         }
-    },
+    }
 
-    sessionGet: (name, type) => {
-        if(!sessionStorage[name] || sessionStorage[name] == null) {
-            console.error("Error: The item "+name+" is not defined."); 
-            return;
-        }
-
+    static localGet(name, type) {
+        localStorage[name] != null ? ()=>{console.error(error_notFound(name)); type="cancel"} : ()=>{}
+        let parsed = keybook.jprs(localStorage[name]);
         switch(type) {
             case "string":
-                if (JSON.parse(sessionStorage[name])[0] == "string") {
-                    return JSON.parse(sessionStorage[name])[1];
-                }
+                if(parsed[0] == "string") return parsed[1];
+                else console.error(error_notCorrectType);
                 break;
             case "boolean":
-                if (JSON.parse(sessionStorage[name])[0] == "boolean") {
-                    var b = false;
-                    JSON.parse(sessionStorage[name])[1] == "1" ? b = true : b = false;
-                    return b;
-                }
-                break;
+                var b;
+                if(parsed[0] == "boolean") parsed[1] == "1" ? b = true : b = false;
+                else { console.error(error_notCorrectType); break; }
+                return b;
             case "number":
-                if (JSON.parse(sessionStorage[name])[0] == "number") {
-                    return Number(JSON.parse(sessionStorage[name])[1]);
-                }
+                if(parsed[0] == "number") return Number(parsed[1]);
+                else console.error(error_notCorrectType);
                 break;
             case "object":
-                if (JSON.parse(sessionStorage[name])[0] == "object") {
-                    return JSON.parse(JSON.parse(sessionStorage[name])[1]);
-                }
+                if(parsed[0] == "object") return keybook.jprs(parsed[1]);
+                else console.error(error_notCorrectType);
                 break;
+            case "cancel":
+                return;
             default:
-                console.error("Error: Incorrect property. Use 'sessionGetRaw' instead."); 
+                console.error(error_incorrectProperty(type));
         }
-    },
+    }
 
-    sessionGetRaw: (name) => { return sessionStorage[name] },
+    static localDelete(name) {
+        localStorage[name] = undefined;
+    }
 
-    sessionEdit: (name, content, type) => {
-        switch(type) {
-            case "string":
-                sessionStorage[name] = JSON.stringify(["string", content]);
-                break;
-            case "boolean":
-                content ? sessionStorage[name] = JSON.stringify(["boolean", 1]) : sessionStorage[name] = JSON.stringify(["boolean", 0]);
-                break;
-            case "number":
-                sessionStorage[name] = JSON.stringify(["number", content.toString()]);
-                break;
-            case "object":
-                sessionStorage[name] = JSON.stringify(["object", JSON.stringify(content)]);
-                break;
-            default:
-                console.error("Error: Incorrect property."); 
-        }
-    },
-
-    localClear: () => {
-        keybook.localDictionary.forEach((i) => {
-            keybook.localDelete(i);
-        });
-        keybook.localDictionary = [];
-    },
-
-    sessionClear: () => {
-        keybook.sessionDictionary.forEach((i) => {
-            keybook.sessionDelete(i);
-        });
-        keybook.sessionDictionary = [];
-    },
-
-    localDelete: (name) => {
-        localStorage[name] = null;
-    },
-
-    sessionDelete: (name) => {
-        sessionStorage[name] = null;
+    static localEdit(name, content, type) {
+        this.localDelete(name);
+        this.localStore(name, content, type);
     }
 }
