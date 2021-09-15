@@ -44,6 +44,7 @@ class keybook {
         }
     }
 
+    /* LocalStorage */
     static persist(key, content) {
         switch(typeof content) {
             case "string":
