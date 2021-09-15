@@ -1,130 +1,89 @@
-/* Core */
 class keybook {
-    static jstr = JSON.stringify;
-    static jprs = JSON.parse;
-    static error_alreadyExists = (name) => { return "Error: The item "+name+" already exists." };
-    static error_notFound = (name) => { return "Error: The item "+name+" do not exists." }
-    static error_notCorrectType = "The called item does not match its current type.";
-    static error_incorrectProperty = (type) => { return "Error: The property "+type+" is invalid."}
-
-    /* SessionStorage Operations */
-    static sessionStore(name, content, type) {
-        sessionStorage[name] != null ? ()=>{console.error(error_alreadyExists(name)); type="cancel"} : ()=>{}
-        switch(type) {
+    /* SessionStorage */
+    static store(key, content) {
+        switch(typeof content) {
             case "string":
-                sessionStorage[name] = keybook.jstr(["string", content]);
-                break;
+                sessionStorage[key.toString()] = JSON.stringify(["string", content]);
+                return content;
             case "boolean":
-                content ? sessionStorage[name] = keybook.jstr(["boolean", 1]) : sessionStorage[name] = keybook.jstr(["boolean", 0]);
-                break;
+                if(content) sessionStorage[key.toString()] = JSON.stringify(["boolean", 1]);
+                else sessionStorage[key.toString()] = JSON.stringify(["boolean", 0]);
+                return content;
             case "number":
-                sessionStorage[name] = keybook.jstr(["number", content.toString()]);
-                break;
+                sessionStorage[key.toString()] = JSON.stringify(["number", Number(content)]);
+                return content;
             case "object":
-                sessionStorage[name] = keybook.jstr(["object", content]);
-                break;
-            case "cancel":
-                return;
+                sessionStorage[key.toString()] = JSON.stringify(["object", JSON.stringify(content)]);
+                return content;
             default:
-                console.error(error_incorrectProperty(type)); 
+                return "<Unknown variable type>"
         }
     }
 
-    static sessionGet(name, type) {
-        sessionStorage[name] != null ? ()=>{console.error(error_notFound(name)); type="cancel"} : ()=>{}
-        let parsed = keybook.jprs(sessionStorage[name]);
-        switch(type) {
-            case "string":
-                if(parsed[0] == "string") return parsed[1];
-                else console.error(error_notCorrectType);
-                break;
-            case "boolean":
-                var b;
-                if(parsed[0] == "boolean") parsed[1] == "1" ? b = true : b = false;
-                else { console.error(error_notCorrectType); break; }
-                return b;
-            case "number":
-                if(parsed[0] == "number") return Number(parsed[1]);
-                else console.error(error_notCorrectType);
-                break;
-            case "object":
-                if(parsed[0] == "object") return keybook.jprs(parsed[1]);
-                else console.error(error_notCorrectType);
-                break;
-            case "cancel":
-                return;
-            default:
-                console.error(error_incorrectProperty(type));
+    static get(key) {
+        if(sessionStorage[key.toString()]) {
+            try {
+                let object = JSON.parse(sessionStorage[key.toString()]);
+                switch(object[0]) {
+                    case "string":
+                        return object[1].toString();
+                    case "boolean":
+                        if (object[1]) return true;
+                        else return false;
+                    case "number":
+                        return Number(object[1]);
+                    case "object":
+                        return JSON.parse(object[1]);
+                }
+            }
+            catch {
+                return "<Unknown Error>"
+            }
         }
     }
 
-    static sessionDelete(name) {
-        sessionStorage[name] = undefined;
-    }
-
-    static sessionEdit(name, content, type) {
-        this.sessionDelete(name);
-        this.sessionStore(name, content, type);
-    }
-
-    /* LocalStorage Operations */
-
-    static localStore(name, content, type) {
-        localStorage[name] != null ? ()=>{console.error(error_alreadyExists(name)); type="cancel"} : ()=>{}
-        switch(type) {
+    static persist(key, content) {
+        switch(typeof content) {
             case "string":
-                localStorage[name] = keybook.jstr(["string", content]);
-                break;
+                localStorage[key.toString()] = JSON.stringify(["string", content]);
+                return content;
             case "boolean":
-                content ? localStorage[name] = keybook.jstr(["boolean", 1]) : localStorage[name] = keybook.jstr(["boolean", 0]);
-                break;
+                if(content) localStorage[key.toString()] = JSON.stringify(["boolean", 1]);
+                else localStorage[key.toString()] = JSON.stringify(["boolean", 0]);
+                return content;
             case "number":
-                localStorage[name] = keybook.jstr(["number", content.toString()]);
-                break;
+                localStorage[key.toString()] = JSON.stringify(["number", Number(content)]);
+                return content;
             case "object":
-                localStorage[name] = keybook.jstr(["object", content]);
-                break;
-            case "cancel":
-                return;
+                localStorage[key.toString()] = JSON.stringify(["object", JSON.stringify(content)]);
+                return content;
             default:
-                console.error(error_incorrectProperty(type)); 
+                return "<Unknown variable type>"
         }
     }
 
-    static localGet(name, type) {
-        localStorage[name] != null ? ()=>{console.error(error_notFound(name)); type="cancel"} : ()=>{}
-        let parsed = keybook.jprs(localStorage[name]);
-        switch(type) {
-            case "string":
-                if(parsed[0] == "string") return parsed[1];
-                else console.error(error_notCorrectType);
-                break;
-            case "boolean":
-                var b;
-                if(parsed[0] == "boolean") parsed[1] == "1" ? b = true : b = false;
-                else { console.error(error_notCorrectType); break; }
-                return b;
-            case "number":
-                if(parsed[0] == "number") return Number(parsed[1]);
-                else console.error(error_notCorrectType);
-                break;
-            case "object":
-                if(parsed[0] == "object") return keybook.jprs(parsed[1]);
-                else console.error(error_notCorrectType);
-                break;
-            case "cancel":
-                return;
-            default:
-                console.error(error_incorrectProperty(type));
+    static fetch(key) {
+        if(localStorage[key.toString()]) {
+            try {
+                let object = JSON.parse(localStorage[key.toString()]);
+
+                switch(object[0]) {
+                    case "string":
+                        return object[1].toString();
+                    case "boolean":
+                        if (object[1]) return true;
+                        else return false;
+                    case "number":
+                        return Number(object[1]);
+                    case "object":
+                        return JSON.parse(object[1]);
+                }
+            }
+            catch {
+                return "<Unknown Error>"
+            }
         }
-    }
-
-    static localDelete(name) {
-        localStorage[name] = undefined;
-    }
-
-    static localEdit(name, content, type) {
-        this.localDelete(name);
-        this.localStore(name, content, type);
     }
 }
+
+export default keybook;
