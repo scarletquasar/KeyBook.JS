@@ -85,3 +85,5 @@ class keybook {
         }
     }
 }
+
+export default keybook;
