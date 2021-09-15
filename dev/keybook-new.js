@@ -24,7 +24,6 @@ class keybook {
         if(sessionStorage[key.toString()]) {
             try {
                 let object = JSON.parse(sessionStorage[key.toString()]);
-
                 switch(object[0]) {
                     case "string":
                         return object[1].toString();
