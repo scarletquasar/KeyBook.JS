@@ -15,7 +15,7 @@ Currently in **Development Stage**
 `keybook.persist(name)`: Stores a literal* value in localStorage.
 <br><br>
 `keybook.fetch(name)`: Gets a literal* value stored in localStorage.
-<br>
+<br><br>
 *Keeps the original shape of the variable.
 ## Thanks
 Thank you for reading about the project. If possible, consider collaborating in some way with the project, sharing it, or leaving a star.
