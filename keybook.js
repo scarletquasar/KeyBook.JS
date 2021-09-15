@@ -34,6 +34,8 @@ class keybook {
                         return Number(object[1]);
                     case "object":
                         return JSON.parse(object[1]);
+                    default:
+                        return;
                 }
             }
             catch {
@@ -77,6 +79,8 @@ class keybook {
                         return Number(object[1]);
                     case "object":
                         return JSON.parse(object[1]);
+                    default:
+                        return;
                 }
             }
             catch {
