@@ -12,7 +12,7 @@ Currently in **Development Stage**
 <br><br>
 `keybook.get(name)`: Gets a literal* value stored in sessionStorage.
 <br><br>
-`keybook.persist(name)`: Stores a literal* value in localStorage.
+`keybook.persist(name, content)`: Stores a literal* value in localStorage.
 <br><br>
 `keybook.fetch(name)`: Gets a literal* value stored in localStorage.
 <br><br>
