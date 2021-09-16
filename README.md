@@ -16,7 +16,7 @@ Currently in **Development Stage**
 <br><br>
 `keybook.fetch(name)`: Gets a literal* value stored in localStorage.
 <br><br>
-*Keeps the original shape of the variable.
+*Keeps the original shape/type of the variable.
 ## Thanks
 Thank you for reading about the project. If possible, consider collaborating in some way with the project, sharing it, or leaving a star.
 
