@@ -3,7 +3,7 @@
 <img align="left" width="75" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Database.svg/640px-Database.svg.png">
 
 JavaScript library aimed at ease of use of location and session storage with dynamic variable type limiters and expiration time.
-Currently in **v1.0.0** 
+Currently in **v1.0.0** | (Discontinued)
 <br><br><br>
 ## Usage:
 ### All library features can be called up using `keybook.*` <br>
